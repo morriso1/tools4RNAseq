@@ -155,19 +155,19 @@ pheatmap_wrapper_function <-
     else if (all(!is.na(filt_1_vec)) & all(is.na(filt_2_vec))) {
       desired_df <- desired_df %>%
         filter(!!filt_1_quo %in% filt_1_vec) %>%
-        dplyr::select(SAM_ids,!!filt_1_quo) %>%
+        dplyr::select(SAM_ids, !!filt_1_quo) %>%
         column_to_rownames(var = "SAM_ids")
     }
     else if (all(is.na(filt_1_vec)) & all(!is.na(filt_2_vec))) {
       desired_df <- desired_df %>%
         filter(!!filt_2_quo %in% filt_2_vec) %>%
-        dplyr::select(SAM_ids,!!filt_2_quo) %>%
+        dplyr::select(SAM_ids, !!filt_2_quo) %>%
         column_to_rownames(var = "SAM_ids")
     }
     else {
       desired_df <- desired_df %>%
-        filter(!!filt_1_quo %in% filt_1_vec, !!filt_2_quo %in% filt_2_vec) %>%
-        dplyr::select(SAM_ids,!!filt_1_quo, !!filt_2_quo) %>%
+        filter(!!filt_1_quo %in% filt_1_vec,!!filt_2_quo %in% filt_2_vec) %>%
+        dplyr::select(SAM_ids, !!filt_1_quo,!!filt_2_quo) %>%
         column_to_rownames(var = "SAM_ids")
     }
 
@@ -213,15 +213,15 @@ scale_extract_gene_set_and_tidy_lcpm_data <- function(loc_exp_lcpm,
   names(treatment) <- sam_ids
 
   scaled_lcpm_gene_set <-
-    scaled_lcpm[rownames(scaled_lcpm) %in% gene_set_charV,] %>%
+    scaled_lcpm[rownames(scaled_lcpm) %in% gene_set_charV, ] %>%
     as_tibble(rownames = 'flybase_ids') %>%
-    gather(SAM_ID, expression, -1)
+    gather(SAM_ID, expression,-1)
 
   scaled_lcpm_gene_set <- scaled_lcpm_gene_set %>%
     mutate(
-      group = recode(scaled_lcpm_gene_set$SAM_ID, !!!groups),
-      treatment = recode(scaled_lcpm_gene_set$SAM_ID, !!!treatment),
-      RNAi = recode(scaled_lcpm_gene_set$SAM_ID, !!!RNAi)
+      group = recode(scaled_lcpm_gene_set$SAM_ID,!!!groups),
+      treatment = recode(scaled_lcpm_gene_set$SAM_ID,!!!treatment),
+      RNAi = recode(scaled_lcpm_gene_set$SAM_ID,!!!RNAi)
     )
 
   return(scaled_lcpm_gene_set)
@@ -250,12 +250,12 @@ scale_extract_gene_set_and_tidy_lcpm_data_simple <-
     names(groups) <- sam_ids
 
     scaled_lcpm_gene_set <-
-      scaled_lcpm[rownames(scaled_lcpm) %in% gene_set_charV, ] %>%
+      scaled_lcpm[rownames(scaled_lcpm) %in% gene_set_charV,] %>%
       as_tibble(rownames = 'flybase_ids') %>%
-      gather(SAM_ID, expression,-1)
+      gather(SAM_ID, expression, -1)
 
     scaled_lcpm_gene_set <- scaled_lcpm_gene_set %>%
-      mutate(group = recode(scaled_lcpm_gene_set$SAM_ID,!!!groups))
+      mutate(group = recode(scaled_lcpm_gene_set$SAM_ID, !!!groups))
 
     return(scaled_lcpm_gene_set)
   }
