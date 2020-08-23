@@ -261,6 +261,14 @@ scale_extract_gene_set_and_tidy_lcpm_data_simple <-
   }
 
 
+#' Violin plot using tidy data
+#'
+#' @param tidy_gene_set_data
+#'
+#' @return
+#' @export
+#'
+#' @examples
 violinplot_from_tidy_gene_set_data <- function(tidy_gene_set_data) {
   ggplot(tidy_gene_set_data,
          aes(x = treatment, y = expression, fill = treatment)) +
