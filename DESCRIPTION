@@ -1,0 +1,29 @@
+Package: tools4RNAseq
+Type: Package
+Title: Extra Functions For RNAseq Analysis
+Version: 0.1.0
+Author: Otto Morris <morris.otto@gene.com>
+Maintainer: The package maintainer <morris.otto@gene.com>
+Description: For use by Otto.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    dplyr,
+    org.Dm.eg.db,
+    limma,
+    edgeR,
+    ggplot2,
+    gplots,
+    pheatmap,
+    readr,
+    tidyr,
+    Glimma,
+    stringr,
+    PCAtools,
+    msigdbr,
+    RcisTarget,
+    DT,
+    tibble,
+    ReactomePA
+RoxygenNote: 7.1.0
