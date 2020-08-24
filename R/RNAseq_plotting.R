@@ -182,7 +182,6 @@ pheatmap_wrapper_function <-
         annotation_col = desired_df,
         border_color = NA,
         cex = 1,
-        fontsize_row = 6,
         ...
       )
   }
