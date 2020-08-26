@@ -13,6 +13,7 @@ pheatmap_wrapper_function(
   filt_2_quo = treatment,
   filt_2_vec = NA,
   var_to_groupby = group,
+  breaksList = seq(-3, 3, by = 0.25),
   ...
 )
 }

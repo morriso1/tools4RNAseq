@@ -139,6 +139,7 @@ pheatmap_wrapper_function <-
            filt_2_quo = treatment,
            filt_2_vec = NA,
            var_to_groupby = group,
+           breaksList = seq(-3, 3, by = 0.25),
            ...) {
     filt_1_quo <- rlang::enquo(filt_1_quo)
     filt_2_quo <- rlang::enquo(filt_2_quo)
@@ -178,10 +179,11 @@ pheatmap_wrapper_function <-
       pheatmap(
         scale = 'row',
         cluster_cols = FALSE,
-        col = bluered(100),
         annotation_col = desired_df,
         border_color = NA,
         cex = 1,
+        color = bluered(length(breaksList)),
+        breaks = breaksList,
         ...
       )
   }
