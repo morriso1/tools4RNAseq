@@ -130,63 +130,63 @@ create_heatmap_from_lcpm <-
 #' @export
 #'
 #' @examples
-pheatmap_wrapper_function <-
-  function(sample_df,
-           x_lcpm,
-           gene_set_char,
-           filt_1_quo =  RNAi,
-           filt_1_vec = c('LacZRNAi'),
-           filt_2_quo = treatment,
-           filt_2_vec = NA,
-           var_to_groupby = group,
-           breaksList = seq(-3, 3, by = 0.25),
-           ...) {
-    filt_1_quo <- rlang::enquo(filt_1_quo)
-    filt_2_quo <- rlang::enquo(filt_2_quo)
-    var_to_groupby <- rlang::enquo(var_to_groupby)
+pheatmap_wrapper_function <- function(sample_df,
+                                      x_lcpm,
+                                      gene_set_char,
+                                      filt_1_quo =  RNAi,
+                                      filt_1_vec = c('LacZRNAi'),
+                                      filt_2_quo = treatment,
+                                      filt_2_vec = NA,
+                                      var_to_groupby = group,
+                                      breaksList = seq(-3, 3, by = 0.25),
+                                      ...) {
+  filt_1_quo <- rlang::enquo(filt_1_quo)
+  filt_2_quo <- rlang::enquo(filt_2_quo)
+  var_to_groupby <- rlang::enquo(var_to_groupby)
 
-    desired_df <- sample_df %>%
-      as_tibble(rownames = "SAM_ids") %>%
-      arrange(!!var_to_groupby)
+  desired_df <- sample_df %>%
+    as_tibble(rownames = "SAM_ids") %>%
+    arrange(!!var_to_groupby)
 
-    if (all(is.na(filt_1_vec)) & all(is.na(filt_2_vec))) {
-      print("must provide at least one filter.")
-      return()
-    }
-    else if (all(!is.na(filt_1_vec)) & all(is.na(filt_2_vec))) {
-      desired_df <- desired_df %>%
-        filter(!!filt_1_quo %in% filt_1_vec) %>%
-        dplyr::select(SAM_ids, !!filt_1_quo) %>%
-        column_to_rownames(var = "SAM_ids")
-    }
-    else if (all(is.na(filt_1_vec)) & all(!is.na(filt_2_vec))) {
-      desired_df <- desired_df %>%
-        filter(!!filt_2_quo %in% filt_2_vec) %>%
-        dplyr::select(SAM_ids, !!filt_2_quo) %>%
-        column_to_rownames(var = "SAM_ids")
-    }
-    else {
-      desired_df <- desired_df %>%
-        filter(!!filt_1_quo %in% filt_1_vec,!!filt_2_quo %in% filt_2_vec) %>%
-        dplyr::select(SAM_ids, !!filt_1_quo,!!filt_2_quo) %>%
-        column_to_rownames(var = "SAM_ids")
-    }
-
-    plt <- x_lcpm %>% as_tibble(rownames = "Flybase_IDs") %>%
-      dplyr::select(Flybase_IDs, rownames(desired_df)) %>%
-      filter(Flybase_IDs %in% gene_set_char) %>%
-      column_to_rownames(var = "Flybase_IDs") %>%
-      pheatmap(
-        scale = 'row',
-        cluster_cols = FALSE,
-        annotation_col = desired_df,
-        border_color = NA,
-        cex = 1,
-        color = bluered(length(breaksList)),
-        breaks = breaksList,
-        ...
-      )
+  if (all(is.na(filt_1_vec)) & all(is.na(filt_2_vec))) {
+    print("must provide at least one filter.")
+    return()
   }
+  else if (all(!is.na(filt_1_vec)) & all(is.na(filt_2_vec))) {
+    desired_df <- desired_df %>%
+      filter(!!filt_1_quo %in% filt_1_vec) %>%
+      dplyr::select(SAM_ids, !!filt_1_quo) %>%
+      column_to_rownames(var = "SAM_ids")
+  }
+  else if (all(is.na(filt_1_vec)) & all(!is.na(filt_2_vec))) {
+    desired_df <- desired_df %>%
+      filter(!!filt_2_quo %in% filt_2_vec) %>%
+      dplyr::select(SAM_ids, !!filt_2_quo) %>%
+      column_to_rownames(var = "SAM_ids")
+  }
+  else {
+    desired_df <- desired_df %>%
+      filter(!!filt_1_quo %in% filt_1_vec,!!filt_2_quo %in% filt_2_vec) %>%
+      dplyr::select(SAM_ids, !!filt_1_quo,!!filt_2_quo) %>%
+      column_to_rownames(var = "SAM_ids")
+  }
+  desired_df <- arrange(desired_df, !!filt_1_quo, !!filt_2_quo)
+
+  plt <- x_lcpm %>% as_tibble(rownames = "Gene_IDs") %>%
+    dplyr::select(Gene_IDs, rownames(desired_df)) %>%
+    filter(Gene_IDs %in% gene_set_char) %>%
+    column_to_rownames(var = "Gene_IDs") %>%
+    pheatmap(
+      scale = 'row',
+      cluster_cols = FALSE,
+      annotation_col = desired_df,
+      border_color = NA,
+      cex = 1,
+      color = bluered(length(breaksList)),
+      breaks = breaksList,
+      ...
+    )
+}
 
 #' Scale and tidy data prior to ggplot2 plot e.g. violin plot.
 #'
